@@ -12,6 +12,16 @@ class Todo1 extends StatefulWidget {
 
 class _Todo1State extends State<Todo1> {
   final todoslist = Todo.todolist();
+
+  List<Todo> _foundToDo = [];
+
+  @override
+  void initState() {
+    _foundToDo = todoslist;
+   
+    super.initState();
+  }
+
   final _toController = TextEditingController();
 
   @override
@@ -37,7 +47,7 @@ class _Todo1State extends State<Todo1> {
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        for (Todo todo in todoslist)
+                        for (Todo todo in _foundToDo)
                           Todolist(
                             todo: todo,
                             onToDoChange: _handleTodoChange,
@@ -127,6 +137,22 @@ class _Todo1State extends State<Todo1> {
     });
     _toController.clear();
   }
+  void _runfilter(String enteredKeyword){
+    List<Todo> results = [];
+    if(enteredKeyword.isEmpty){
+      results = todoslist;
+    }else{
+      results = todoslist.where((item) => item.todotext.toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
+    }
+
+    setState(() {
+      _foundToDo= results;
+    });
+
+
+  }
+ 
+
 
   Widget searcbox() {
     return Container(
@@ -134,6 +160,7 @@ class _Todo1State extends State<Todo1> {
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: TextField(
+        onChanged: (value) => _runfilter(value),
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(0),
             prefixIcon: Icon(
