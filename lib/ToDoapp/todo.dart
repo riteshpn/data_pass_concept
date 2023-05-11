@@ -4,7 +4,7 @@ import 'package:data_pass_concept/widget/listTodo.dart';
 import 'package:flutter/material.dart';
 
 class Todo1 extends StatefulWidget {
-  Todo1({super.key});
+const  Todo1({super.key});
 
   @override
   State<Todo1> createState() => _Todo1State();
@@ -112,7 +112,7 @@ class _Todo1State extends State<Todo1> {
                           _addToDoItem(_toController.text);
                         }
                       },
-                      child: Text(
+                    child: Text(
                         '+',
                         style: TextStyle(
                           fontSize: 40,
@@ -120,7 +120,7 @@ class _Todo1State extends State<Todo1> {
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: tdBlue,
-                        minimumSize: Size(60, 60),
+                        minimumSize:const Size(60, 60),
                         elevation: 10,
                       ),
                     ),
@@ -206,16 +206,14 @@ class _Todo1State extends State<Todo1> {
         backgroundColor: tdBGcolor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(
+          children: const[
+             Icon(
               Icons.menu,
               color: tdBlack,
             ),
-            Container(
-              child: CircleAvatar(
-                child: Icon(Icons.person),
-                radius: 15,
-              ),
+             CircleAvatar (
+              child: Icon(Icons.person),
+              radius: 15,
             )
           ],
         ));

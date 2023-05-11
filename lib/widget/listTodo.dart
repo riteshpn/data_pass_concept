@@ -18,7 +18,7 @@ class Todolist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin:const EdgeInsets.only(bottom: 20),
       child: ListTile(
         onTap: () {
           onToDoChange(todo);
@@ -26,7 +26,7 @@ class Todolist extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+        contentPadding:const EdgeInsets.symmetric(horizontal: 20),
         tileColor: Colors.white,
         leading: Icon(
           todo.isDone ? Icons.check_box : Icons.check_box_outline_blank,
@@ -46,7 +46,7 @@ class Todolist extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: Icon(Icons.edit),
+                icon:const Icon(Icons.edit),
                 onPressed: () {
                   onEditngItem();
                   // onDeleteItem(todo.id);
@@ -55,7 +55,7 @@ class Todolist extends StatelessWidget {
 
               IconButton(
                 color: Colors.red,
-                icon: Icon(Icons.delete),
+                icon:const Icon(Icons.delete),
                 onPressed: () {
                   onDeleteItem(todo.id);
                 },

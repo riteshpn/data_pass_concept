@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+   const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Todo1(),
+      home:const Todo1(),
     );
   }
 }
