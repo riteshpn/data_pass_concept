@@ -12,13 +12,14 @@ class Todo1 extends StatefulWidget {
 
 class _Todo1State extends State<Todo1> {
   final todoslist = Todo.todolist();
+  Todo? _selectedTodo;
 
   List<Todo> _foundToDo = [];
 
   @override
   void initState() {
     _foundToDo = todoslist;
-   
+
     super.initState();
   }
 
@@ -32,7 +33,7 @@ class _Todo1State extends State<Todo1> {
         body: Stack(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Column(
                 children: [
                   searcbox(),
@@ -40,8 +41,8 @@ class _Todo1State extends State<Todo1> {
                     child: ListView(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 40, bottom: 40),
-                          child: Text(
+                          margin: const EdgeInsets.only(top: 40, bottom: 40),
+                          child: const Text(
                             'All Todos',
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
@@ -49,6 +50,9 @@ class _Todo1State extends State<Todo1> {
                         ),
                         for (Todo todo in _foundToDo)
                           Todolist(
+                            onEditngItem: () {
+                              _editing(todo);
+                            },
                             todo: todo,
                             onToDoChange: _handleTodoChange,
                             onDeleteItem: _deleteToDoItem,
@@ -65,16 +69,16 @@ class _Todo1State extends State<Todo1> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                         bottom: 20,
                         right: 20,
                         left: 20,
                       ),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 4, horizontal: 15),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 15),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                               color: Colors.grey,
                               offset: Offset(0.0, 0.0),
@@ -85,17 +89,28 @@ class _Todo1State extends State<Todo1> {
                       ),
                       child: TextField(
                         controller: _toController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             hintText: 'Add a new todo item',
                             border: InputBorder.none),
                       ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 20, right: 20),
+                    margin: const EdgeInsets.only(bottom: 20, right: 20),
                     child: ElevatedButton(
                       onPressed: () {
-                        _addToDoItem(_toController.text);
+                        if (_selectedTodo != null) {
+                          int index = todoslist.indexWhere(
+                              (element) => element.id == _selectedTodo!.id);
+                          _selectedTodo!.todotext = _toController.text;
+                          todoslist[index] = _selectedTodo!;
+                          setState(() {
+                            _toController.text = "";
+                            _selectedTodo = null;
+                          });
+                        } else {
+                          _addToDoItem(_toController.text);
+                        }
                       },
                       child: Text(
                         '+',
@@ -104,7 +119,7 @@ class _Todo1State extends State<Todo1> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: tdBlue,
+                        backgroundColor: tdBlue,
                         minimumSize: Size(60, 60),
                         elevation: 10,
                       ),
@@ -129,39 +144,49 @@ class _Todo1State extends State<Todo1> {
     });
   }
 
+  void _editing(Todo edit) {
+    _toController.text = edit.todotext;
+    setState(() {
+      _selectedTodo = edit;
+    });
+  }
+
   void _addToDoItem(String todo) {
     setState(() {
-      todoslist.add(Todo(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          todotext: todo));
+      todoslist.insert(
+          0,
+          Todo(
+              id: DateTime.now().millisecondsSinceEpoch.toString(),
+              todotext: todo));
     });
     _toController.clear();
   }
-  void _runfilter(String enteredKeyword){
+
+  void _runfilter(String enteredKeyword) {
     List<Todo> results = [];
-    if(enteredKeyword.isEmpty){
+    if (enteredKeyword.isEmpty) {
       results = todoslist;
-    }else{
-      results = todoslist.where((item) => item.todotext.toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
+    } else {
+      results = todoslist
+          .where((item) => item.todotext
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
     }
 
     setState(() {
-      _foundToDo= results;
+      _foundToDo = results;
     });
-
-
   }
- 
-
 
   Widget searcbox() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: TextField(
         onChanged: (value) => _runfilter(value),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             contentPadding: EdgeInsets.all(0),
             prefixIcon: Icon(
               Icons.search,
